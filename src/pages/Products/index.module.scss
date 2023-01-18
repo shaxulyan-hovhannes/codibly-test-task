@@ -1,0 +1,19 @@
+.productsPageRoot {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    
+    .filterBlock {
+        height: 50px;
+    }
+    
+    .listBlock {
+        max-height: calc(100% - 70px);
+        // margin-top: 20px;
+        flex: 1 1 auto;
+        background: blue;
+        overflow: auto;
+    }
+}
