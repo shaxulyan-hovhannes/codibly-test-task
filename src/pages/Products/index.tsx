@@ -1,28 +1,40 @@
-import { useEffect } from 'react';
-import axios from '../../services/axios';
+import { useState, useEffect, useMemo } from 'react';
 
 import styles from './index.module.scss';
 
 import FilterProductsById from '../../components/FilterProductsById';
+import Table from './../../components/UI/Table'
+
+import { getAllProductsAsync } from './../../store/reducers/products/productsSlice'
+
+import {useAppDispatch, useAppSelector} from './../../hooks'
+
+import { PRODUCTS_TABLE_HEAD_DATA } from './../../constants/products'
 
 const Products = () => {
-    useEffect(() => {
-        console.log({env: process.env.REACT_APP_REQRES_API_URL})
-        const fetched = axios.request({
-            url: "/products",
-            method: 'GET',
-        })
+    const [searchTerm, setSearchTerm] = useState(0);
 
-        console.log('FETCHED', fetched)
-    }, []);
+    const dispatch = useAppDispatch();
+
+    const { data, page, per_page, total, status } = useAppSelector(state => state.products)
+
+    console.log({data})
+
+    const productsTableBodyData = useMemo(() => {
+        if (!searchTerm) return data;
+
+        return data.find(product => product.id === searchTerm);
+    }, [data, searchTerm])
+
+    useEffect(() => {
+        dispatch(getAllProductsAsync({page, per_page}))
+    }, [dispatch, page, per_page]);
 
     return <div className={styles.productsPageRoot}>
         <div className={styles.filterBlock}><FilterProductsById /></div>
         <div className={styles.listBlock}>
-            <div
-            style={{height: 5000, background: 'green'}}
-            >
-                </div></div>
+            <Table headData={PRODUCTS_TABLE_HEAD_DATA} bodyData={data} onRowClick={() => {}} />
+        </div>
     </div>
 }
 

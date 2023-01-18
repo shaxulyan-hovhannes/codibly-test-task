@@ -1,9 +1,9 @@
 import axios from "../services/axios";
 
 class ProductsApi {
-    async getProducts() {
-        const fetched = await axios.request({
-            url: "/products",
+    getProducts({page, per_page}: {page: number, per_page: number}) {
+        const fetched = axios.request({
+            url: `/products?page=${page}&per_page=${per_page}`,
             method: 'GET',
         })
 

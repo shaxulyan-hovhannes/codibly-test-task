@@ -14,7 +14,7 @@ import { MAIN_THEME_COLOR } from "./../../../constants/common";
 
 interface MuiHeadData {
     id: string;
-    label: number;
+    label: string;
     format?: (value: any) => any 
   };
 
@@ -54,6 +54,7 @@ const MuiTable = ({ headData, bodyData, onRowClick }: MuiTableProps) => {
                   key={row.code}
                   onClick={() => onRowClick(row)}
                   className={styles.tableRow}
+                  sx={{background: row.color ?? 'inherit'}}
                 >
                   {headData.map((column) => {
                     const value = row[column.id];
