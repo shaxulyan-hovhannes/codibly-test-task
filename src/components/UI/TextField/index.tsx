@@ -2,7 +2,7 @@ import TextField from '@mui/material/TextField';
 
 import {MAIN_THEME_COLOR} from './../../../constants/common'
 
-const MuiTextField = () => {
+const MuiTextField = (props: any) => {
     return  <TextField
     sx={
         {
@@ -18,8 +18,8 @@ const MuiTextField = () => {
         InputLabelProps={{
             style: { color: MAIN_THEME_COLOR },
           }}
-          
-        id="outlined-basic" label="Outlined" variant="outlined" />
+
+        id="search input field" variant="outlined" {...props} />
 }
 
 export default MuiTextField

@@ -2,9 +2,14 @@ import TextField from './../../components/UI/TextField'
 
 import styles from './index.module.scss'
 
-const FilterProductsById = () => {
+interface FIlterProductsByIdProps {
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    type?: string
+  }
+
+const FilterProductsById = ({onChange, type}: FIlterProductsByIdProps) => {
     return <div className={styles.filterProductsByIdRoot}>
-        <TextField />
+        <TextField onChange={onChange} type={type} />
     </div>
 }
 
