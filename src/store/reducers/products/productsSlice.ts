@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import productsApi from './../../../api//products';
 
 import {ProductsInterface} from './../../../models'
@@ -33,7 +33,7 @@ export const getAllProductsAsync = createAsyncThunk(
   }
 );
 
-export const counterSlice = createSlice({
+export const productSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
@@ -42,6 +42,9 @@ export const counterSlice = createSlice({
     },
     setPerPage: (state, action) => {
       state.per_page = action.payload
+    },
+    selectPerPage: (state, action) => {
+      state.per_page = action.payload;
     },
     resetProducts: (state) => {
         state.data = [];
@@ -52,6 +55,8 @@ export const counterSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAllProductsAsync.pending, (state) => {
+        state.data = [];
+
         state.status = 'loading';
       })
       .addCase(getAllProductsAsync.fulfilled, (state, action) => {
@@ -74,6 +79,6 @@ export const counterSlice = createSlice({
   },
 });
 
-export const { setPage, setPerPage, resetProducts } = counterSlice.actions;
+export const { setPage, setPerPage, selectPerPage, resetProducts } = productSlice.actions;
 
-export default counterSlice.reducer;
+export default productSlice.reducer;

@@ -4,6 +4,9 @@ import styles from './index.module.scss'
 
 import ArrowIcon from './../../../assets/pagination_arrow_icon.svg'
 
+import Select, { SelectOption } from './../Select'
+import { SelectChangeEvent } from '@mui/material/Select';
+
 export type ArrowVariation = 'left' | 'right'
 
 interface PaginationProps {
@@ -11,38 +14,20 @@ interface PaginationProps {
     total: number,
     page: number,
     per_page: number,
-    onSelectPage: (page: ArrowVariation) => void
+    onSelectPage: (page: ArrowVariation) => void,
+    perPageOptions: SelectOption[]
+    onPerPageChange: (e: SelectChangeEvent) => void
 }
 
-const Pagination = ({ arrowSize = 70, total = 1, page = 1, per_page = 1, onSelectPage = () => {} }: PaginationProps) => {
+const Pagination = ({ arrowSize = 70, total = 1, page = 1, per_page = 1,
+    onSelectPage = () => {}, perPageOptions, onPerPageChange }: PaginationProps) => {
     
     const totalPages = useMemo(() => Math.ceil(total / per_page), [total, per_page]);
 
-    // const handleLeftArroClick = useCallback(() => {
-    //     const currentPage = selectedPage - 1;
-
-    //     if (currentPage < 1) return;
-        
-    //     setSelectedPage(currentPage);
-
-    //     onSelectPage(currentPage)
-    // }, [selectedPage, onSelectPage])
-
-    // const handleClickRightArrow = useCallback(() => {
-    //     const currentPage = selectedPage + 1;
-
-    //     if (currentPage > totalPages) return;
-
-    //     setSelectedPage(currentPage)
-
-    //     onSelectPage(currentPage)
-    // }, [selectedPage, totalPages, onSelectPage])
-
-    const handleArrowClick = useCallback<any>((variation: ArrowVariation) => {
+    const handleArrowClick = useCallback<any>((variation: ArrowVariation) => () => {
         onSelectPage(variation)
     }, [onSelectPage])
     
-    console.log({page})
 
     return <div className={styles.paginationRoot}>
         <div style={{width: arrowSize, height: arrowSize}}
@@ -52,6 +37,8 @@ const Pagination = ({ arrowSize = 70, total = 1, page = 1, per_page = 1, onSelec
         <img src={ArrowIcon} alt="Pagination arrow left" />
         {page < 2 ?   <div className={styles.disabledBlock}></div> : null}
         </div>
+
+        <div className={styles.selectPerPageBlock}><Select options={perPageOptions} value={`${per_page}`} onSelectChange={onPerPageChange} /></div>
 
         <div style={{width: arrowSize, height: arrowSize}}
         className={`${styles.arrowBlock} ${page < totalPages ? styles.activeArrowBlock : ''}`}

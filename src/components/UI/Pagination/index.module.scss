@@ -49,4 +49,16 @@
             background: rgba(0, 0, 0, 0.07);
         }
     }
+
+    .perPageBlock {
+        width: 100px;
+        height: 100%;
+    }
+
+    .selectPerPageBlock {
+        width: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }

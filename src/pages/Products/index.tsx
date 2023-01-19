@@ -6,12 +6,13 @@ import FilterProductsById from '../../components/FilterProductsById';
 import Table from './../../components/UI/Table';
 import Dialog from './../../components/UI/Dialog';
 import Pagination, { ArrowVariation } from '../../components/UI/Pagination';
+import { SelectChangeEvent } from '@mui/material/Select';
 
-import { getAllProductsAsync, setPage, setPerPage } from './../../store/reducers/products/productsSlice'
+import { getAllProductsAsync, setPage, selectPerPage } from './../../store/reducers/products/productsSlice'
 
 import {useAppDispatch, useAppSelector} from './../../hooks'
 
-import { PRODUCTS_TABLE_HEAD_DATA } from './../../constants/products'
+import { PRODUCTS_TABLE_HEAD_DATA, PER_PAGE_OPTION_ITEMS } from './../../constants/products'
 
 import { ProductsInterface } from './../../models'
 
@@ -19,7 +20,6 @@ const Products = () => {
     const [ selectedProduct, setSelectedProduct ] = useState<SetStateAction <any>>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [ dialogOpen, setDialogOpen ] = useState(false);
-    const [selectedPerPageOption, setSelectedPerPageOption] = useState({label: '5', value: 5});
 
     const dispatch = useAppDispatch();
 
@@ -52,7 +52,30 @@ const Products = () => {
 
     const onSelectPage = useCallback((variation: ArrowVariation) => {
       let currentPage = page;
-    }, [dispatch, page]);
+
+      if (variation === 'left') {
+        if (currentPage < 2) return;
+
+        currentPage -= 1;
+      }
+
+      if (variation === 'right') {
+        if (currentPage < (Math.ceil(total / per_page))) {
+            currentPage += 1
+        }
+        else return;
+      }
+
+      dispatch(setPage(currentPage))
+    }, [page, total, per_page, dispatch]);
+
+    const onPerPageChange = (e:SelectChangeEvent) => {
+        setSearchTerm('');
+
+        const {value} = e.target;
+
+        dispatch(selectPerPage(value))
+    }
 
     useEffect(() => {
         dispatch(getAllProductsAsync({page, per_page}))
@@ -67,7 +90,10 @@ const Products = () => {
             <Table headData={PRODUCTS_TABLE_HEAD_DATA} bodyData={productsTableBodyData} onRowClick={onRowClick} />
         </div>
         <div className={styles.paginationBlock}>
-            <Pagination total={total} page={page} per_page={per_page} onSelectPage={() => {}} />
+            <Pagination total={total} page={page} per_page={per_page}
+            onSelectPage={onSelectPage} perPageOptions={PER_PAGE_OPTION_ITEMS}
+            onPerPageChange={onPerPageChange}
+            />
         </div>
         <Dialog dialogTitle="Product details" open={ dialogOpen } onClose={onDialogClose}>
          {PRODUCTS_TABLE_HEAD_DATA.map(data => {
