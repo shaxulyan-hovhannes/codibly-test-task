@@ -10,8 +10,6 @@ import TableRow from "@mui/material/TableRow";
 
 import { MAIN_THEME_COLOR } from "./../../../constants/common";
 
-import { ProductsInterface } from './../../../models'
-
 interface MuiHeadData {
     id: string;
     label: string;
@@ -21,7 +19,7 @@ interface MuiHeadData {
 interface MuiTableProps {
     headData: MuiHeadData[];
     bodyData: any[];
-    onRowClick: (row: ProductsInterface) => void
+    onRowClick: (row: any) => void
   }
 
 const MuiTable = ({ headData, bodyData, onRowClick }: MuiTableProps) => {
