@@ -1,5 +1,3 @@
-import React from "react";
-
 import styles from "./index.module.scss";
 
 import Paper from "@mui/material/Paper";
@@ -12,6 +10,8 @@ import TableRow from "@mui/material/TableRow";
 
 import { MAIN_THEME_COLOR } from "./../../../constants/common";
 
+import { ProductsInterface } from './../../../models'
+
 interface MuiHeadData {
     id: string;
     label: string;
@@ -21,7 +21,7 @@ interface MuiHeadData {
 interface MuiTableProps {
     headData: MuiHeadData[];
     bodyData: any[];
-    onRowClick: (row: any[]) => void
+    onRowClick: (row: ProductsInterface) => void
   }
 
 const MuiTable = ({ headData, bodyData, onRowClick }: MuiTableProps) => {
@@ -51,7 +51,7 @@ const MuiTable = ({ headData, bodyData, onRowClick }: MuiTableProps) => {
                   hover
                   role="checkbox"
                   tabIndex={-1}
-                  key={row.code}
+                  key={row.id}
                   onClick={() => onRowClick(row)}
                   className={styles.tableRow}
                   sx={{background: row.color ?? 'inherit'}}

@@ -1,0 +1,38 @@
+.dialogTitleContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px 0 !important;
+}
+
+.dialogTitle {
+    font-size: 24px;
+    font-weight: 600;
+    color: black
+}
+
+.closeIconBlock {
+    cursor: pointer;
+    display: flex;
+    padding: 5px;
+    border-radius: 50%;
+    transition: 0.2s;
+}
+
+.closeIconBlock:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.closeIconBlock:active {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.closeIcon {
+    font-size: 28px;
+}
+
+.dialogContent {
+    // padding: 40px 25px;
+    // word-break: break-all;
+    // font-size: 18px;
+}
