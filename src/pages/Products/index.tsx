@@ -3,10 +3,11 @@ import { useState, useEffect, useMemo, useCallback, SetStateAction } from 'react
 import styles from './index.module.scss';
 
 import FilterProductsById from '../../components/FilterProductsById';
-import Table from './../../components/UI/Table'
-import Dialog from './../../components/UI/Dialog'
+import Table from './../../components/UI/Table';
+import Dialog from './../../components/UI/Dialog';
+import Pagination, { ArrowVariation } from '../../components/UI/Pagination';
 
-import { getAllProductsAsync } from './../../store/reducers/products/productsSlice'
+import { getAllProductsAsync, setPage, setPerPage } from './../../store/reducers/products/productsSlice'
 
 import {useAppDispatch, useAppSelector} from './../../hooks'
 
@@ -18,6 +19,7 @@ const Products = () => {
     const [ selectedProduct, setSelectedProduct ] = useState<SetStateAction <any>>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [ dialogOpen, setDialogOpen ] = useState(false);
+    const [selectedPerPageOption, setSelectedPerPageOption] = useState({label: '5', value: 5});
 
     const dispatch = useAppDispatch();
 
@@ -36,7 +38,7 @@ const Products = () => {
     }
 
     const onRowClick = useCallback((row: ProductsInterface) => {
-        console.log({row});
+
         setSelectedProduct(row);
         
         setDialogOpen(true);
@@ -47,6 +49,10 @@ const Products = () => {
 
         setSelectedProduct(null);
     }, [])
+
+    const onSelectPage = useCallback((variation: ArrowVariation) => {
+      let currentPage = page;
+    }, [dispatch, page]);
 
     useEffect(() => {
         dispatch(getAllProductsAsync({page, per_page}))
@@ -60,10 +66,12 @@ const Products = () => {
         <div className={styles.listBlock}>
             <Table headData={PRODUCTS_TABLE_HEAD_DATA} bodyData={productsTableBodyData} onRowClick={onRowClick} />
         </div>
+        <div className={styles.paginationBlock}>
+            <Pagination total={total} page={page} per_page={per_page} onSelectPage={() => {}} />
+        </div>
         <Dialog dialogTitle="Product details" open={ dialogOpen } onClose={onDialogClose}>
          {PRODUCTS_TABLE_HEAD_DATA.map(data => {
             const id = data.id;
-            console.log({id})
             return (
                 <div className={styles.productDetailsBlock} key={data.id}>
                 <p className={styles.label}>{data.label}:</p>
