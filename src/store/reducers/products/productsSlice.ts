@@ -44,6 +44,8 @@ export const productSlice = createSlice({
       state.per_page = action.payload
     },
     selectPerPage: (state, action) => {
+      state.page = 1;
+      
       state.per_page = action.payload;
     },
     resetProducts: (state) => {
